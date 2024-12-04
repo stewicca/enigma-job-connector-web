@@ -1,6 +1,9 @@
+import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+import { useToast } from '@/hooks/use-toast.js'
+import { useNavigate } from 'react-router'
+import useLogin from '../hooks/use-login.js'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -12,6 +15,10 @@ const formSchema = z.object({
 });
 
 const LoginForm = () => {
+    const { toast } = useToast();
+    const navigate = useNavigate();
+    const { mutateAsync } = useLogin();
+
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -21,7 +28,14 @@ const LoginForm = () => {
     })
 
     const onSubmit = async (values) => {
-        console.log(values);
+        try {
+            const { data, message } = await mutateAsync(values);
+            sessionStorage.setItem('accessToken', JSON.stringify(data.accessToken));
+            toast({ description: message });
+            navigate('/', { replace: true });
+        } catch (error) {
+            toast({ variant: 'destructive', description: error.message });
+        }
     }
 
     return (
