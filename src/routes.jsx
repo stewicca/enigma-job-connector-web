@@ -1,10 +1,14 @@
 import { Navigate, useRoutes } from 'react-router'
-import { NotFound } from '@/pages'
+import { Login, NotFound } from '@/pages'
 
 const AppRouter = () => {
     return useRoutes([
         {
-            path: '/404',
+            path: 'login',
+            element: <Login />,
+        },
+        {
+            path: '404',
             element: <NotFound />
         },
         {

@@ -1,11 +1,14 @@
+import { Suspense } from 'react'
 import { BrowserRouter } from 'react-router'
 import AppRoutes from '@/routes.jsx'
 
 const App = () => {
     return (
-        <BrowserRouter>
-            <AppRoutes />
-        </BrowserRouter>
+        <Suspense>
+            <BrowserRouter>
+                <AppRoutes />
+            </BrowserRouter>
+        </Suspense>
     );
 }
 
