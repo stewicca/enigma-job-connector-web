@@ -1,41 +1,23 @@
-import * as z from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { useToast } from '@/hooks/use-toast.js'
-import { useNavigate } from 'react-router'
-import useLogin from '../hooks/use-login.js'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { loginFormSchema } from '@/pages/login/schema/index.js';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
-const formSchema = z.object({
-    username: z.string().min(3, 'Username must be at least 3 characters.'),
-    password: z.string().min(8, 'Password must be at least 8 characters.')
-});
-
-const LoginForm = () => {
-    const { toast } = useToast();
-    const navigate = useNavigate();
-    const { mutateAsync } = useLogin();
-
+const LoginForm = ({ onSubmit }) => {
     const form = useForm({
-        resolver: zodResolver(formSchema),
+        resolver: zodResolver(loginFormSchema),
         defaultValues: {
             username: '',
-            password: '',
-        },
+            password: ''
+        }
     })
 
-    const onSubmit = async (values) => {
-        try {
-            const { data, message } = await mutateAsync(values);
-            sessionStorage.setItem('accessToken', JSON.stringify(data.accessToken));
-            toast({ description: message });
-            navigate('/', { replace: true });
-        } catch (error) {
-            toast({ variant: 'destructive', description: error.message });
-        }
+    const handleSubmit = async (values) => {
+        await onSubmit(values);
     }
 
     return (
@@ -47,30 +29,30 @@ const LoginForm = () => {
                 </CardHeader>
                 <CardContent>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+                        <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-8'>
                             <FormField
                                 control={form.control}
                                 name='username'
-                                render={({ field }) => (
+                                render={({field}) => (
                                     <FormItem>
                                         <FormLabel>Username</FormLabel>
                                         <FormControl>
                                             <Input placeholder='Enter your username' {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage/>
                                     </FormItem>
                                 )}
                             />
                             <FormField
                                 control={form.control}
                                 name='password'
-                                render={({ field }) => (
+                                render={({field}) => (
                                     <FormItem>
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
                                             <Input type='password' placeholder='Enter your password' {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage/>
                                     </FormItem>
                                 )}
                             />
@@ -80,12 +62,17 @@ const LoginForm = () => {
                 </CardContent>
                 <CardFooter className='flex justify-center'>
                     <p className='text-sm text-gray-600 dark:text-gray-400'>
-                        Don&#39;t have an account? <a href='/signup' className='text-blue-600 hover:underline'>Sign up</a>
+                        Don&#39;t have an account?
+                        <a href='/signup' className='text-blue-600 hover:underline'>Sign up</a>
                     </p>
                 </CardFooter>
             </Card>
         </div>
-    )
+    );
+}
+
+LoginForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired
 }
 
 export default LoginForm;

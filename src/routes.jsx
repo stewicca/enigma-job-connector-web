@@ -1,7 +1,11 @@
-import { Suspense } from 'react'
-import { Navigate, Outlet, useRoutes } from 'react-router'
-import DashboardLayout from '@/components/layouts/dashboard-layout.jsx'
-import { Dashboard, Login, NotFound } from '@/pages'
+import { Suspense } from 'react';
+import { Navigate, Outlet, useRoutes } from 'react-router';
+
+// Layouts
+import DashboardLayout from '@/components/layouts/dashboard-layout.jsx';
+
+// Pages
+import { AddUser, Dashboard, EditUser, Login, NotFound, User } from '@/pages';
 
 const AppRouter = () => {
     return useRoutes([
@@ -9,7 +13,7 @@ const AppRouter = () => {
             path: '',
             element: (
                 <DashboardLayout>
-                    <Suspense>
+                    <Suspense fallback={<div>Loading...</div>}>
                         <Outlet />
                     </Suspense>
                 </DashboardLayout>
@@ -18,12 +22,34 @@ const AppRouter = () => {
                 {
                     index: true,
                     element: <Dashboard />
-                }
-            ]
+                },
+                {
+                    path: 'user',
+                    element: (
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <Outlet />
+                        </Suspense>
+                    ),
+                    children: [
+                        {
+                            index: true,
+                            element: <User />
+                        },
+                        {
+                            path: 'add',
+                            element: <AddUser />
+                        },
+                        {
+                            path: 'edit/:id',
+                            element: <EditUser />
+                        }
+                    ]
+                },
+            ],
         },
         {
             path: 'login',
-            element: <Login />,
+            element: <Login />
         },
         {
             path: '404',
@@ -31,9 +57,9 @@ const AppRouter = () => {
         },
         {
             path: '*',
-            element: <Navigate to='/404' replace />
-        }
+            element: <Navigate to="/404" replace />
+        },
     ]);
-}
+};
 
 export default AppRouter;
