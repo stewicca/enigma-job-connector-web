@@ -13,7 +13,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://tokonyadia-api.padrone.my.id/api',
+        target: 'http://152.42.224.141:8080/api',
         secure: true,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),

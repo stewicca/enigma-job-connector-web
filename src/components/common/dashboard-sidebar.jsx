@@ -1,11 +1,12 @@
 import { NavLink } from 'react-router';
-import { LayoutDashboard, Users } from 'lucide-react';
+import { Briefcase, LayoutDashboard, Users } from 'lucide-react';
 import {
     Sidebar,
     SidebarContent,
     SidebarGroup,
     SidebarGroupContent,
     SidebarGroupLabel,
+    SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
@@ -19,27 +20,39 @@ const items = [
     },
     {
         title: 'User',
-        url: "/user",
+        url: '/user',
         icon: Users,
     }
 ]
 
 const DashboardSidebar = () => {
     return (
-        <Sidebar>
-            <SidebarContent>
+        <Sidebar collapsible='icon'>
+            <SidebarHeader className='bg-spaceCadet py-4'>
+                <div className='flex items-center justify-center text-lotion'>
+                    <div className='flex items-center space-x-2'>
+                        <Briefcase className='shrink-0 w-6 h-6' />
+                        <span className='text-lg font-bold truncate transition-all group-data-[collapsible=icon]:hidden'>
+                            ENIGJOB
+                        </span>
+                    </div>
+                </div>
+            </SidebarHeader>
+            <SidebarContent className='bg-spaceCadet text-lotion'>
                 <SidebarGroup>
-                    <SidebarGroupLabel>Application</SidebarGroupLabel>
+                    <SidebarGroupLabel className='text-lotion'>Menu</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {items.map((item) => (
                                 <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <NavLink to={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </NavLink>
-                                    </SidebarMenuButton>
+                                    <NavLink to={item.url} className={({ isActive }) => isActive ? 'active' : ''}>
+                                        {({ isActive }) => (
+                                            <SidebarMenuButton isActive={isActive}>
+                                                <item.icon />
+                                                <span>{item.title}</span>
+                                            </SidebarMenuButton>
+                                        )}
+                                    </NavLink>
                                 </SidebarMenuItem>
                             ))}
                         </SidebarMenu>

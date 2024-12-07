@@ -6,7 +6,7 @@ const DashboardLayout = ({ children }) => {
     return (
         <SidebarProvider>
             <DashboardSidebar />
-            <main className="w-full">
+            <main className="w-full bg-brightGray">
                 <SidebarTrigger />
                 <div className="mx-8 py-10">{children}</div>
             </main>
