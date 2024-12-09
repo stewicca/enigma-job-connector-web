@@ -7,7 +7,7 @@ import { addUserFormSchema } from '@/pages/user/schema/index.js';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.jsx';
 
-const AddUserForm = ({ onSubmit }) => {
+const AddUserForm = ({ categories, onSubmit }) => {
     const form = useForm({
         resolver: zodResolver(addUserFormSchema),
         defaultValues: {
@@ -15,7 +15,8 @@ const AddUserForm = ({ onSubmit }) => {
             username: '',
             password: '',
             email: '',
-            role: ''
+            role: '',
+            categoryId: ''
         }
     });
 
@@ -24,8 +25,8 @@ const AddUserForm = ({ onSubmit }) => {
     }
 
     return (
-        <>
-            <h1 className='text-3xl font-bold mb-6'>Add User</h1>
+        <div className='flex flex-col gap-6 py-5'>
+            <h1 className='text-beer text-2xl font-bold'>Add User</h1>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-8'>
                     <FormField
@@ -35,7 +36,7 @@ const AddUserForm = ({ onSubmit }) => {
                             <FormItem>
                                 <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder='John Doe' {...field} />
+                                    <Input className='focus-visible:ring-beer' placeholder='John Doe' {...field} />
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
@@ -48,7 +49,7 @@ const AddUserForm = ({ onSubmit }) => {
                             <FormItem>
                                 <FormLabel>Username</FormLabel>
                                 <FormControl>
-                                    <Input placeholder='johndoe' {...field} />
+                                    <Input className='focus-visible:ring-beer' placeholder='johndoe' {...field} />
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
@@ -61,7 +62,7 @@ const AddUserForm = ({ onSubmit }) => {
                             <FormItem>
                                 <FormLabel>Password</FormLabel>
                                 <FormControl>
-                                    <Input type='password' placeholder='********' {...field} />
+                                    <Input className='focus-visible:ring-beer' type='password' placeholder='********' {...field} />
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
@@ -74,7 +75,7 @@ const AddUserForm = ({ onSubmit }) => {
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                    <Input type='email' placeholder='john@example.com' {...field} />
+                                    <Input className='focus-visible:ring-beer' type='email' placeholder='john@example.com' {...field} />
                                 </FormControl>
                                 <FormMessage/>
                             </FormItem>
@@ -88,7 +89,7 @@ const AddUserForm = ({ onSubmit }) => {
                                 <FormLabel>Role</FormLabel>
                                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
-                                        <SelectTrigger>
+                                        <SelectTrigger className='focus:ring-beer'>
                                             <SelectValue placeholder='Select a role'/>
                                         </SelectTrigger>
                                     </FormControl>
@@ -101,14 +102,37 @@ const AddUserForm = ({ onSubmit }) => {
                             </FormItem>
                         )}
                     />
-                    <Button type='submit'>Submit</Button>
+                    <FormField
+                        control={form.control}
+                        name='categoryId'
+                        render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Category</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger className='focus:ring-beer'>
+                                            <SelectValue placeholder='Select a category'/>
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        { categories && categories.map((category) => (
+                                            <SelectItem value={category.id} key={category.id}>{category.name}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage/>
+                            </FormItem>
+                        )}
+                    />
+                    <Button type='submit' variant='secondary'>Submit</Button>
                 </form>
             </Form>
-        </>
+        </div>
     );
 }
 
 AddUserForm.propTypes = {
+    categories: PropTypes.array.isRequired,
     onSubmit: PropTypes.func.isRequired
 };
 

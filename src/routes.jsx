@@ -5,7 +5,7 @@ import { Navigate, Outlet, useRoutes } from 'react-router';
 import DashboardLayout from '@/components/layouts/dashboard-layout.jsx';
 
 // Pages
-import { AddUser, Dashboard, EditUser, Login, NotFound, User } from '@/pages';
+import { AddUser, EditUser, Login, NotFound, User } from '@/pages';
 
 const AppRouter = () => {
     return useRoutes([
@@ -21,7 +21,7 @@ const AppRouter = () => {
             children: [
                 {
                     index: true,
-                    element: <Dashboard />
+                    element: <Navigate to='/user' replace />,
                 },
                 {
                     path: 'user',

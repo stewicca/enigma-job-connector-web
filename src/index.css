@@ -25,6 +25,10 @@
     --sidebar-ring: 217.2 91.2% 59.8%}
 
   body {
-    @apply bg-lotion
+    @apply min-h-screen bg-center bg-cover;
   }
+}
+
+body {
+  background-image: url('@/assets/dashboard-background.jpg');
 }

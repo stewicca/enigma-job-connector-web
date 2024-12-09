@@ -1,26 +1,14 @@
+import axios from 'axios';
 import { useEffect } from 'react';
-import axios, { AxiosError } from 'axios';
 import { useNavigate } from 'react-router';
 import { useToast } from '@/hooks/use-toast.js';
-import { useMutation } from '@tanstack/react-query';
+import { useFetch } from '@/hooks/use-fetch.js';
 
 export const useAuthClient = () => {
     const { toast } = useToast();
     const navigate = useNavigate();
     const authClient = axios.create({ withCredentials: true });
-    const { mutateAsync } = useMutation({
-        mutationFn: async () => {
-            try {
-                const { data } = await axios.post('/api/auth/refresh-token', {}, { withCredentials: true });
-                return data;
-            } catch (error) {
-                if (error instanceof AxiosError) {
-                    throw error.response.data;
-                }
-                throw new Error('An error occurred.');
-            }
-        }
-    });
+    const { mutateAsync: refreshToken } = useFetch(null, '/api/auth/refresh-token', { withCredentials: true });
 
     useEffect(() => {
         const requestInterceptor = authClient.interceptors.request.use(
@@ -38,10 +26,11 @@ export const useAuthClient = () => {
             (response) => response,
             async (error) => {
                 const originalRequest = error.config;
-                if (error.response.status === 401) {
+                if (error.response.status === 401 && !originalRequest._retry) {
+                    originalRequest._retry = true;
                     try {
-                        const { data } = await mutateAsync();
-                        sessionStorage.setItem('accessToken', data.accessToken);
+                        const { data } = await refreshToken();
+                        sessionStorage.setItem('accessToken', JSON.stringify(data.accessToken));
                         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
                         return authClient.request(originalRequest);
                     } catch (refreshError) {
@@ -59,7 +48,7 @@ export const useAuthClient = () => {
             authClient.interceptors.request.eject(requestInterceptor);
             authClient.interceptors.response.eject(responseInterceptor);
         };
-    }, [authClient, mutateAsync, navigate, toast]);
+    }, [authClient, refreshToken, navigate, toast]);
 
     return authClient;
 }

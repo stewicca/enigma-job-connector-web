@@ -31,7 +31,7 @@ const LoginForm = ({ onSubmit }) => {
                     <div className='hidden lg:block w-[35%] h-[500px] bg-beer rounded-3xl'>
                         <img src={illustration} className='absolute h-[500px] bottom-0 -left-1/4' />
                     </div>
-                    <Card className='w-full max-w-md text-raisinBlack bg-brightGray border-0 rounded-3xl shadow-none'>
+                    <Card className='z-10 w-full max-w-md text-raisinBlack bg-brightGray border-0 rounded-3xl shadow-none'>
                         <CardHeader>
                             <CardTitle className='text-beer text-3xl text-center font-extrabold'>Login</CardTitle>
                         </CardHeader>
