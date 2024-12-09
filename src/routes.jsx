@@ -5,7 +5,7 @@ import { Navigate, Outlet, useRoutes } from 'react-router';
 import DashboardLayout from '@/components/layouts/dashboard-layout.jsx';
 
 // Pages
-import { AddUser, EditUser, Login, NotFound, User } from '@/pages';
+import { AddCategory, AddUser, Category, EditCategory, EditUser, Login, NotFound, User } from '@/pages';
 
 const AppRouter = () => {
     return useRoutes([
@@ -22,6 +22,28 @@ const AppRouter = () => {
                 {
                     index: true,
                     element: <Navigate to='/user' replace />,
+                },
+                {
+                    path: 'category',
+                    element: (
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <Outlet />
+                        </Suspense>
+                    ),
+                    children: [
+                        {
+                            index: true,
+                            element: <Category />
+                        },
+                        {
+                            path: 'add',
+                            element: <AddCategory />
+                        },
+                        {
+                            path: 'edit/:id',
+                            element: <EditCategory />
+                        }
+                    ]
                 },
                 {
                     path: 'user',

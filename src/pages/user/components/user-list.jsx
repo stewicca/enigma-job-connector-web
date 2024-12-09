@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router';
+import { Link } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input.jsx';
 import { Button } from '@/components/ui/button.jsx';
@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import SearchBar from '@/components/common/search-bar.jsx';
 import SortComponent from '@/components/common/sort-component.jsx';
 import { importUserFormSchema } from '@/pages/user/schema/index.js';
-import {FolderDown, Import, MoreHorizontal, Pencil, Trash, UserPlus} from 'lucide-react';
+import { FolderDown, Import, MoreHorizontal, Pencil, Trash, UserPlus } from 'lucide-react';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form.jsx';
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu.jsx';
@@ -24,7 +24,7 @@ const UserList = ({ data, onDelete, onChangePage, onExport, onImport, onChangeSe
     return (
         <div className='flex flex-col gap-6 py-5'>
             <div className='flex items-center justify-between'>
-                <SearchBar onChangeSearchParams={onChangeSearchParams} />
+                <SearchBar placeholder='Search user' onChangeSearchParams={onChangeSearchParams} />
                 <div className='flex gap-2'>
                     <Button onClick={() => onExport()} variant='secondary' size='lg' className='px-4 lg:px-8'>
                         <span className='hidden md:block'>Export User</span>
@@ -71,12 +71,12 @@ const UserList = ({ data, onDelete, onChangePage, onExport, onImport, onChangeSe
                             </Form>
                         </DialogContent>
                     </Dialog>
-                    <NavLink to='/user/add'>
+                    <Link to='/user/add'>
                         <Button variant='secondary' size='lg' className='px-4 lg:px-8'>
                             <span className='hidden md:block'>Add User</span>
                             <UserPlus className='md:hidden' />
                         </Button>
-                    </NavLink>
+                    </Link>
                 </div>
             </div>
             <h1 className='text-beer text-2xl font-bold'>Users</h1>
@@ -114,7 +114,7 @@ const UserList = ({ data, onDelete, onChangePage, onExport, onImport, onChangeSe
                         </div>
                         <div className='absolute right-4 lg:right-10 top-4 lg:top-1/2 lg:-translate-y-1/2'>
                             <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
+                                <DropdownMenuTrigger>
                                     <Button variant='ghost' className='h-8 w-8 p-0'>
                                         <span className='sr-only'>Open menu</span>
                                         <MoreHorizontal className='h-4 w-4'/>
@@ -124,12 +124,12 @@ const UserList = ({ data, onDelete, onChangePage, onExport, onImport, onChangeSe
                                     <DropdownMenuLabel>
                                         Actions
                                     </DropdownMenuLabel>
-                                    <NavLink to={`/user/edit/${user.id}`}>
+                                    <Link to={`/user/edit/${user.id}`}>
                                         <DropdownMenuItem>
                                             <Pencil className='mr-2 h-4 w-4'/>
                                             Edit
                                         </DropdownMenuItem>
-                                    </NavLink>
+                                    </Link>
                                     <DropdownMenuItem onClick={() => onDelete(user.id)}>
                                         <Trash className='mr-2 h-4 w-4'/>
                                         Delete
