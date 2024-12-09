@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router';
-import { LogOut, Users, NotebookText } from 'lucide-react';
+import { LogOut, Users, NotebookText, Building2 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar.jsx';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuItem } from '@/components/ui/sidebar.jsx';
 import PropTypes from "prop-types";
@@ -14,6 +14,11 @@ const items = [
         title: 'User',
         url: '/user',
         icon: Users,
+    },
+    {
+        title: 'Client',
+        url: '/client',
+        icon: Building2,
     }
 ]
 

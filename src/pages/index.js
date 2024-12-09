@@ -8,6 +8,9 @@ const EditCategory = lazy(() => import('./category/pages/edit-category'));
 const User = lazy(() => import('./user'));
 const AddUser = lazy(() => import('./user/pages/add-user.jsx'));
 const EditUser = lazy(() => import('./user/pages/edit-user.jsx'));
+const Client = lazy(() => import('./client'));
+const AddClient = lazy(() => import('./client/pages/add-client'));
+const EditClient = lazy(() => import('./client/pages/edit-client'));
 
 export {
     NotFound,
@@ -17,5 +20,8 @@ export {
     EditCategory,
     User,
     AddUser,
-    EditUser
+    EditUser,
+    Client,
+    AddClient,
+    EditClient
 }

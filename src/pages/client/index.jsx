@@ -4,21 +4,21 @@ import { useToast } from '@/hooks/use-toast.js';
 import { useFetch } from '@/hooks/use-fetch.js';
 import { HTTP_METHODS } from '@/lib/constant.js';
 import { getErrorMessage } from '@/lib/get-error-message.js';
-import CategoryList from '@/pages/category/components/category-list.jsx';
+import ClientList from '@/pages/client/components/client-list.jsx';
 
 // API URL
-const CATEGORY_USER_API_URL = '/api/user/category';
+const CLIENT_API_URL = '/api/client';
 
-const Category = () => {
-    const { toast } = useToast()
+const Client = () => {
+    const { toast } = useToast();
     const { searchParam, handleChangeSearchParams } = useSearch('name');
     const { sortBy, sortDirection, handleSort } = useSort();
-    const { data, isLoading, refetch } = useFetch(HTTP_METHODS.GET, CATEGORY_USER_API_URL, {}, [['name', searchParam], ['sortBy', sortBy]]);
-    const { mutateAsync: deleteCategory } = useFetch(HTTP_METHODS.DELETE, CATEGORY_USER_API_URL);
+    const { data, isLoading, refetch } = useFetch(HTTP_METHODS.GET, CLIENT_API_URL, {}, [['name', searchParam], ['sortBy', sortBy]]);
+    const { mutateAsync: deleteClient } = useFetch(HTTP_METHODS.DELETE, CLIENT_API_URL);
 
     const handleDelete = async (id) => {
         try {
-            const { message } = await deleteCategory(id);
+            const { message } = await deleteClient(id);
             toast({ description: message });
             await refetch();
         } catch (error) {
@@ -29,9 +29,9 @@ const Category = () => {
     if (isLoading) {
         return <div>Loading...</div>;
     }
-    
+
     return (
-        <CategoryList
+        <ClientList
             data={data.data}
             onDelete={handleDelete}
             onChangeSearchParams={handleChangeSearchParams}
@@ -41,4 +41,4 @@ const Category = () => {
     );
 }
 
-export default Category;
+export default Client;
